@@ -1,0 +1,217 @@
+.content{
+    position: absolute;
+    top: 49px;
+    left: 226px;
+    width: calc(100% - 227px);
+    height: calc(100vh - 49px);
+}
+
+.content .title-and-button{
+    margin: 16px 12px 16px 16px; 
+    display: flex ;
+}
+
+.content .title-and-button .title{
+    font-family: GoogleSans;
+    font-size: 20px;
+    font-weight: bold;
+
+    
+}
+
+.content .title-and-button .button-have-icon {
+    display: flex;
+    text-align: left;
+    align-items: center;
+}
+
+.content .title-and-button .add-and-delete #btn-add-employee{
+    margin-right: 16px;
+}
+
+.content .title-and-button .add-and-delete #btn-delete-employee{
+    background-color: #F65454;
+}
+
+.content .title-and-button .button-have-icon .add-icon{
+    background-image: url('../../assets/icon/add.png');
+}
+
+.content .title-and-button .button-have-icon .button-title{
+    width: fit-content;
+    margin-left: 8px;
+}
+
+.content .second-line{
+    display: flex;
+    width: calc(100% - 2px);
+    padding-left: 16px;
+    box-sizing: border-box;
+}
+
+.content .second-line .search-box{
+    display: flex;
+    width: 250px;
+}
+
+.content .second-line .search-box .search-icon{
+    height: 16px;
+    width: 16px;
+    margin: 16px 0px 16px 16px;
+    background-image: url('../../assets/icon/search.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.content .second-line .search-box .search-input{
+    width: 100%;
+    border: 0px;
+    margin-left: 8px;
+    margin-right: 50px;
+}
+
+.content .second-line .dropdown-box{
+    margin-left: 10px;
+    margin-right: 16px;
+}
+
+.content .second-line .dropdown-box .dropdown-icon{
+    margin-left: 12px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+#combobox-1{
+    margin-left: 16px;
+}
+
+#combobox-2{
+    margin-left: 16px;
+}
+
+.content .second-line .button-refresh{
+    height: 40px;
+    width: 40px;
+    margin-left: auto;
+    border-radius: 4px;
+    background-image: url('../../assets/icon/refresh.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid #bbbbbb   ;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.content .table-list{
+    display: flex;
+    margin: 16px 16px 0px 16px;
+    height: calc(100vh - 234px);
+    overflow-y: scroll;
+    overflow-x: scroll;
+    overflow: auto;
+}
+
+.content .table-list::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+    background-color: #bbbbbb;
+}
+
+.content .table-list::-webkit-scrollbar-thumb{
+    min-height: 40px;
+    background-color: #454545;
+    border-radius: 4px;
+}
+
+.content .table-list::-webkit-scrollbar-track-piece{
+    margin-top: 39px;
+}
+
+.content .table-list table{
+    position: relative;
+    border-collapse: collapse;
+    padding-left: 16px;
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.content .table-list table tbody tr td{
+    padding-left: 16px;
+    border-bottom: 1px solid #bbbbbb;
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+}
+
+.content .table-list table th{
+    position: sticky; 
+    border-bottom: 1px solid #ddd;
+    padding-left: 16px;
+}
+
+.content .table-list table tr:nth-child(even){
+    background-color: #E9EBEE;
+}
+
+.content .table-list table tr:hover{
+    background-color: #2FBE8E;
+}
+
+.content .table-list table .salary{
+    text-align: right;
+    padding-right: 24px;
+}
+
+.content .paging-bar{
+    bottom: 0px;
+    height: 56px;
+    display: flex; 
+    margin-left: 16px;
+    margin-right: 16px;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    background-color: #ffffff;
+}
+
+
+.content .paging-bar .pagingbar-tool{
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.content .paging-bar .pagingbar-tool .to-top{
+    margin-right: 10px;
+}
+
+.content .paging-bar .pagingbar-tool .page-number-list{
+    flex-shrink: 0;
+}
+
+.content .paging-bar .pagingbar-tool .page-number-list .page-number{
+    border-radius: 50%;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    flex-shrink: 0;
+    height: 30px;
+    width: 30px;
+    align-items: center;
+}
+
+.content .paging-bar .pagingbar-tool .page-number-list .page-number-select{
+    background-color: #01B075;
+}
+
+.content .paging-bar .number-show{
+    position: absolute;
+    left: 32px;
+}
+
+.content .paging-bar .employ-per-page{
+    position: absolute;
+    right: 32px;
+}

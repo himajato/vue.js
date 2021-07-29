@@ -1,0 +1,38 @@
+@import url(./Button.css);
+@import url(./Combobox.css);
+@import url(./FieldInput.css);
+@import url(./Modal.css);
+@import url(./TextBox.css);
+
+body{
+    margin: 0;
+    font-family: GoogleSans;
+    font-size: 13px;
+}
+
+.text-align-left{
+    text-align: left;
+}
+
+.text-align-center{
+    text-align: center;
+}
+
+.text-align-right{
+    text-align: right;
+}
+
+@font-face{
+    font-family: 'GoogleSans';
+    src: url('../../assets/font/GoogleSans-Regular.otf');
+}
+
+@font-face{
+    font-family: 'GoogleSans-Bold';
+    src: url('../../assets/font/GoogleSans-Bold.otf');
+}
+
+@font-face{
+    font-family: 'GoogleSans-italic';
+    src: url('../../assets/font/GoogleSans-Italic.otf');
+}
