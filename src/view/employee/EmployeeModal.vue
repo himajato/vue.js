@@ -54,21 +54,7 @@
                                         </div>
                                        <div class="input-right">
                                         <div style="margin-top: 16px">Giới tính</div>
-                                        <div id="cbb-gender" class="combobox" style="margin-top: 4px; width: 100%;">
-                                            <input 
-                                            id="gender-input" 
-                                            style="width: 100%;" 
-                                            type="text" value="Nam" 
-                                            readonly>
-                                            <button id="btn-combobox-gender" class="btn-dropdown">
-                                                <i id="icon-dropdown-gender" class="fas fa-chevron-down"></i>
-                                            </button>
-                                            <div id="combobox-gender" gender-id="" class="combobox-data">
-                                                <div id="gender-male" class="combobox-items" >Nam</div>
-                                                <div id="gender-female" class="combobox-items">Nữ</div>
-                                                <div id="gender-undefine" class="combobox-items">Không xác định</div>
-                                            </div>
-                                        </div>  
+                                        <ComboboxGender @cbbDataOnClick="onCbbClick" v-bind:isShow='isShowComBoboxData'/>
                                        </div>
                                     </div>    
                                     <div style="display: flex;">
@@ -160,7 +146,11 @@
                                     <div class="input-right">
                                         <div style="margin-top: 16px">Mức lương cơ bản</div>
                                         <div class="salary-input" style="display: flex; position: relative;">
-                                            <input id="salary-input" class="text-box-default" style="margin-top: 4px; width: 100%; text-align: right; display: flex; padding-right: 55px;"/>
+                                            <input 
+                                            id="salary-input" 
+                                            class="text-box-default" 
+                                            style="margin-top: 4px; width: 100%; text-align: right; display: flex; padding-right: 55px;"
+                                            v-model="employee.Salary"/>
                                             <div style="font-family: GoogleSans-italic; position: absolute; right: 10px; top: 14.5px;">(VNĐ)</div>
                                         </div>
                                     </div>
@@ -196,10 +186,14 @@
 
 <script>
 import axios from 'axios'
+import ComboboxGender from '../../components/base/ComboboxGender.vue'
 //import EmployeeList from './EmployeeList.vue'
 
 export default {
-    
+    components:{
+        ComboboxGender,
+    },
+
     props: {
         isShow:{
             type: Boolean,
@@ -211,6 +205,9 @@ export default {
         },
         formMode: {
             type: Number,
+        },
+        newEmployeeCode: {
+            type: String,
         },
     },
 
@@ -231,22 +228,31 @@ export default {
                     .then(res => {
                         self.employee = res.data;
                     }).catch(res => {
+                        alert('Lấy dữ liệu nhân viên thất bại');
                         console.log(res);
                     })                
         },
         formMode: function(){
             if(this.formMode == 0){
                 this.employee = {};
+                this.employee.EmployeeCode = this.newEmployeeCode;
             }
         },
+        newEmployeeCode: function(){
+            this.employee.EmployeeCode = this.newEmployeeCode;
+        }
     },
 
     methods: {
+        /**
+         * đóng modal 
+         */
         closeModal() {
             this.$emit('closeModal', false)
-            console.log()
-            console.log(this.formMode)
         },
+        /**
+         * click vào nút save trong modal
+         */
         btnSaveOnClick() {
             var self = this;
             if(self.formMode == 0){
@@ -254,16 +260,24 @@ export default {
                     .then(function() {
                         alert('Thêm nhân viên thành công')
                     }).catch(res => {
+                        alert('Thêm nhân viên thất bại')
                         console.log(res.code)
-                    })  
+                    }) 
             } else {
                 axios.put(`http://cukcuk.manhnv.net/v1/Employees/${self.employeeId}`, self.employee)
                     .then(function() {
                         alert('Sửa nhân viên thành công')
                     }).catch(res => {
+                        alert('Sửa nhân viên thất bại')
                         console.log(res);
                     })  
             }
+        },
+        /**
+         * Click vào combobox thì hiện lên hoặc ẩn đi
+         */
+        onCbbClick(){
+            this.isShowComBoboxData = !this.isShowComBoboxData;
         },
     },
 
@@ -272,6 +286,7 @@ export default {
             code: [],
             employee: {},
             employeeEmpty: {},
+            isShowComBoboxData: false,
         }
     },
 }

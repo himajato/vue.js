@@ -2,7 +2,8 @@
   <div>
     <div class="table-list">
       <table style="position: relative">
-        <thead>
+        <thead
+        @click="checkedDelete">
           <tr
             style="
               height: 40px;
@@ -10,6 +11,7 @@
               top: 0px;
               background-color: #ffffff;
             "
+            
           >
             <th></th>
             <th class="text-align-left">Mã nhân viên</th>
@@ -30,9 +32,8 @@
             v-for="employee in employees"
             :key="employee.EmployeeId"
             @dblclick="updateEmployeeById(employee.EmployeeId)"
-
           >
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" v-model="checkedId" :value="employee.EmployeeId"/></td>
             <td>{{ employee.EmployeeCode }}</td>
             <td>{{ employee.FullName }}</td>
             <td>{{ employee.GenderName }}</td>
@@ -52,6 +53,7 @@
 
 <script>
 import axios from "axios";
+import EmployeeApi from "../../api/component/EmployeeApi.js"
 export default {
   name: "EmployeeList",
   components: {},
@@ -63,7 +65,7 @@ export default {
   mounted() {
     var self = this;
     axios
-      .get("http://cukcuk.manhnv.net/v1/Employees")
+      EmployeeApi.getAll()
       .then((res) => {
         self.employees = res.data;
       })
@@ -73,15 +75,28 @@ export default {
   },
 
   methods: {
-      updateEmployeeById(id){
+    
+    /**
+    * sửa nhân viên theo id
+    */
+    updateEmployeeById(id){
           this.$emit('updateEmployeeById', id);
+    },
+    checkedDelete(){
+        console.log(this.checkedId);
     },
   },
 
+  watch: {
+      checkedId: function(){
+          this.$emit('getDeleteList', this.checkedId);
+      }
+  },
   data() {
     return {
       employees: [],
       employee: {},
+      checkedId: []
     };
   },
 };

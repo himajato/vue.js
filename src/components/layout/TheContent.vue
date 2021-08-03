@@ -4,11 +4,20 @@
       <div class="title-and-button">
         <div class="title">Danh sách nhân viên</div>
         <div class="add-and-delete" style="display: flex; margin-left: auto">
-          <div id="btn-add-employee" class="button-have-icon" @click="addEmployee">
-            <div class="add-icon button-icon" ></div>
+          <div
+            id="btn-add-employee"
+            class="button-have-icon"
+            @click="handlerAdd"
+          >
+            <div class="add-icon button-icon"></div>
             <div class="button-title">Thêm nhân viên</div>
           </div>
-          <div id="btn-delete-employee" class="button-have-icon" @click="deleteEmployee">
+          <div
+            id="btn-delete-employee"
+            class="button-have-icon"
+            :class="{'hidden': isHide}"
+            @click="onDeleteClick"
+          >
             <div class="delete-icon">
               <i class="fas fa-trash-alt"></i>
             </div>
@@ -143,7 +152,7 @@
         </div>
         <div id="btn-refresh" class="button-refresh" @click="refresh"></div>
       </div>
-      <EmployeeList @updateEmployeeById="updateEmployeeById"/>
+      <EmployeeList @updateEmployeeById="updateEmployeeById" @getDeleteList="getDeleteList"/>
       <div class="paging-bar">
         <div class="number-show">Hiện thị 1-10/1000 nhân viên</div>
         <div class="pagingbar-tool">
@@ -179,63 +188,167 @@
         <div class="employ-per-page">10 nhân viên/trang</div>
       </div>
     </div>
-    <EmployeeModal :isShow='employeeModalShow' @closeModal="closeModal" :employeeId="employeeId" :formMode="formMode"/>
+    <EmployeeModal
+      :isShow="employeeModalShow"
+      @closeModal="closeModal"
+      :newEmployeeCode="newEmployeeCode"
+      :employeeId="employeeId"
+      :formMode="formMode"
+    />
+    <PopUp 
+    :isShowPopup="isShowPopup" 
+    @onCancelClick="onCancelClick"
+    @onDeleteConfirm="onDeleteConfirm"/>
   </div>
 </template>
 
 <script>
-import EmployeeList from '../../view/employee/EmployeeList.vue'
-import EmployeeModal from '../../view/employee/EmployeeModal.vue'
+import axios from "axios";
+import EmployeeList from "../../view/employee/EmployeeListt.vue";
+import EmployeeModal from "../../view/employee/EmployeeModal.vue";
+import PopUp from "../base/PopUp.vue";
+import BaseApi from "../../api/base/BaseApi.js"
+//import $ from 'jQuery'
 export default {
-  name: 'Content',
+  name: "Content",
 
-  props: {
-    
-  },
+  props: {},
 
-  mounted() {
-
-  },
+  mounted() {},
 
   components: {
     EmployeeList,
     EmployeeModal,
+    PopUp,
   },
-  
+
   methods: {
+    /**
+     * Thêm mới nhân viên
+     */
     addEmployee() {
       this.formMode = 0;
       this.employeeModalShow = true;
     },
 
-    closeModal(employeeModalShow){
+    /**
+     * đóng modal
+     */
+    closeModal(employeeModalShow) {
       this.employeeModalShow = employeeModalShow;
     },
 
-    deleteEmployee(){
-      alert('delete');
+    /**
+     * Xóa nhân viên bằng id
+     */
+    getDeleteList(deleteList){
+      this.deleteList = deleteList;
+    },
+    /**
+     * Xóa nhân viên theo Id
+     * created By: NHNNGHIA (2/8/2021)
+     */
+     deleteEmployeeById(id){
+      axios.delete(`http://cukcuk.manhnv.net/v1/Employees/${id}`)
+          .then(  function() {
+            alert('Xóa thành công');
+          }).catch(res => {
+            console.log(res);
+          })
+    },
+    /**
+     * Bắt sự kiện click vào nút xóa
+     */
+    onDeleteClick(){
+      if(this.deleteList.length == 0){
+        alert('Bạn chưa chọn nhân viên nào')
+      } else {
+        this.isShowPopup = true;
+      }
+    },
+    /**
+     * sửa thông tin nhân viên bằng id
+     */
+    updateEmployeeById(id) {
+      this.formMode = 1;
+      this.employeeId = id;
+      this.employeeModalShow = true;
     },
 
-     updateEmployeeById(id){
-       this.formMode = 1;
-       this.employeeId = id;
-       this.employeeModalShow = true;
-     },
+    /**
+     * Load lại bảng
+     */
+    refresh() {
+      alert("refresh");
+    },
 
-    refresh(){
-      alert('refresh');
+    /**
+     * Lấy dữ liệu nhân viên mới
+     */
+    getNewEmployeeCode() {
+      // var self = this;
+      // newCode
+      //   .then((res) => {
+      //     self.newEmployeeCode = res.data;
+      //   })
+      //   .catch((res) => {
+      //     alert("Lấy mã nhân viên mới thất bại");
+      //     console.log(res);
+      //   });
+    },
+
+    /**
+     * Khi bấm vào nút thêm thì hiển thị modal và lấy dữ liệu mã nhân viên mới
+     */
+    handlerAdd() {
+      this.addEmployee();
+      this.getNewEmployeeCode();
+    },
+
+    /**
+     * Sự kiện click vào nút thoát của popup
+     */
+    onCancelClick(){
+      this.isShowPopup = false;
+    },
+
+    /**
+     * Xử lí sự kiện confirm xóa  nhân viên
+     * created by: NHNGHIA (02/08/2021)
+     */
+    onDeleteConfirm(){
+      var self = this;
+      this.deleteList.forEach( function(item) {
+        self.deleteEmployeeById(item);
+        self.isShowPopup = false;
+        self.isHide = true;
+      })
+    }
+  },
+
+  watch: {
+    deleteList: function(){
+      if(this.deleteList.length == 0) {
+        this.isHide = true;
+      } else {
+        this.isHide = false;
+      }
     }
   },
   data() {
     return {
       employeeModalShow: false,
-      employeeId: '',
+      employeeId: "",
       formMode: 0,
-    }
+      newEmployeeCode: "",
+      deleteList: [],
+      isShowPopup: false,
+      isHide: true,
+    };
   },
-}
+};
 </script>
 
 <style scoped>
-  @import url("../../css/layout/Content.css");
+@import url("../../css/layout/Content.css");
 </style>

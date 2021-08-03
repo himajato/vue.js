@@ -12,7 +12,10 @@
     outline: none;
     display: inline-block;
     cursor: pointer;
-    width: 100%;
+}
+
+.hidden{
+    visibility: hidden;
 }
 
 .button:hover{
