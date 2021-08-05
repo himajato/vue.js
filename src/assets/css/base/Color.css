@@ -1,0 +1,17 @@
+:root{
+    --primary-color: #01B075;
+    --hover-color: #2FBE8E;
+    --default: #019160;
+    --focus: #EBF9F4;
+    --warning: #F65454;
+    --light-pink: #FFEBEB;
+    --blue: #FFEBEB;
+    --light-blue: #FFEBEB;
+    --orange: #FFEBEB;
+    --skin: #FFF3EB;
+    --black: #000000;
+    --light-black: #454545;
+    --gray: #BBBBBB;
+    --light-gray: #BBBBBB;
+    --white-gray: #E9EBEE;
+}

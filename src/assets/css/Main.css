@@ -1,9 +1,3 @@
-@import url(./Button.css);
-@import url(./Combobox.css);
-@import url(./FieldInput.css);
-@import url(./Modal.css);
-@import url(./TextBox.css);
-
 body{
     margin: 0;
     font-family: GoogleSans;
@@ -24,15 +18,15 @@ body{
 
 @font-face{
     font-family: 'GoogleSans';
-    src: url('../../assets/font/GoogleSans-Regular.otf');
+    src: url('../font/GoogleSans-Regular.otf');
 }
 
 @font-face{
     font-family: 'GoogleSans-Bold';
-    src: url('../../assets/font/GoogleSans-Bold.otf');
+    src: url('../font/GoogleSans-Bold.otf');
 }
 
 @font-face{
     font-family: 'GoogleSans-italic';
-    src: url('../../assets/font/GoogleSans-Italic.otf');
+    src: url('../font/GoogleSans-Italic.otf');
 }

@@ -25,7 +25,7 @@
 </template>
 
 <style scoped>
-  @import url('../../css/layout/Header.css');
+  @import url('../../assets/css/layout/Header.css');
 </style>
 
 <script>

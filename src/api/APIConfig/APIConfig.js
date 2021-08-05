@@ -1,5 +1,5 @@
 var APIConfig = {
-    development: 'http://cukcuk.manhnv.net/v1/Employees/',
+    development: 'http://cukcuk.manhnv.net/v1/',
     production: 'local:8081'
 }
 

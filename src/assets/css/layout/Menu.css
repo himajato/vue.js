@@ -19,7 +19,7 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background-image: url('../../assets/icon/dashboard.png');
+    background-image: url('../../icon/dashboard.png');
     background-size: contain;
     background-position: center;
     
@@ -37,7 +37,7 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background-image: url('../../assets/icon/report.png');
+    background-image: url('../../icon/report.png');
     background-size: contain;
     background-position: center;
 }
@@ -46,7 +46,7 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background-image: url('../../assets/icon/dic-employee.png');
+    background-image: url('../../icon/dic-employee.png');
     background-size: contain;
     background-position: center;
 }
@@ -55,7 +55,7 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background-image: url('../../assets/icon/setting.png');
+    background-image: url('../../icon/setting.png');
     background-size: contain;
     background-position: center;
 }

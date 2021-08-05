@@ -1,73 +1,37 @@
 <template>
   <div>
     <div class="table-list">
-      <table style="position: relative">
-        <thead
-        @click="checkedDelete">
-          <tr
-            style="
-              height: 40px;
-              position: sticky;
-              top: 0px;
-              background-color: #ffffff;
-            "
-            
-          >
-            <th></th>
-            <th class="text-align-left">Mã nhân viên</th>
-            <th class="text-align-left">Họ và tên</th>
-            <th class="text-align-left">Giới tính</th>
-            <th class="text-align-center">Ngày sinh</th>
-            <th class="text-align-center">Điện thoại</th>
-            <th class="text-align-left">Email</th>
-            <th class="text-align-left">Chức vụ</th>
-            <th class="text-align-left">Phòng ban</th>
-            <th class="text-align-right salary">Mức lương cơ bản</th>
-            <th class="text-align-left">Tình trạng công việc</th>
-          </tr>
-        </thead>
-        <tbody class="tbody-table">
-          <tr
-            style="height: 40px"
-            v-for="employee in employees"
-            :key="employee.EmployeeId"
-            @dblclick="updateEmployeeById(employee.EmployeeId)"
-          >
-            <td><input type="checkbox" v-model="checkedId" :value="employee.EmployeeId"/></td>
-            <td>{{ employee.EmployeeCode }}</td>
-            <td>{{ employee.FullName }}</td>
-            <td>{{ employee.GenderName }}</td>
-            <td class="text-align-center">{{ employee.DateOfBirth }}</td>
-            <td class="text-align-center">{{ employee.PhoneNumber }}</td>
-            <td>{{ employee.Email }}</td>
-            <td>{{ employee.PositionName }}</td>
-            <td>{{ employee.DepartmentName }}</td>
-            <td class="text-align-right salary">{{ employee.Salary }}</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <Table
+        :ths="thsEmployee"
+        :list="employees"
+        :idOfRow="employeeId"
+        @sendDeleteList="getDeleteList"
+        @sendIdNeedToUpdateToParent="getIdUpdate"
+        @check="checkedDelete"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import EmployeeApi from "../../api/component/EmployeeApi.js"
+import EmployeeApi from "../../api/component/EmployeeApi.js";
+import Table from "../../components/base/Table.vue";
+import Format from "../../utils/common/Format.js";
 export default {
   name: "EmployeeList",
-  components: {},
+  components: {
+    Table,
+  },
 
-  props:{
-
-  }, 
-   
-  mounted() {
+  created() {
     var self = this;
-    axios
-      EmployeeApi.getAll()
+    EmployeeApi.getAll()
       .then((res) => {
         self.employees = res.data;
+        self.employees.forEach((item) => {
+          item.Salary = Format.salaryFormat(item.Salary);
+          item.DateOfBirth = Format.dobFormat(item.DateOfBirth);
+        });
       })
       .catch((res) => {
         console.log(res);
@@ -75,28 +39,119 @@ export default {
   },
 
   methods: {
-    
-    /**
-    * sửa nhân viên theo id
-    */
-    updateEmployeeById(id){
-          this.$emit('updateEmployeeById', id);
+    getAllEmployee() {},
+
+    getIdUpdate(id) {
+      this.updateId = id;
     },
-    checkedDelete(){
-        console.log(this.checkedId);
+    /**
+     *
+     */
+    updateEmployeeById(id) {
+      this.$emit("updateEmployeeById", id);
+    },
+    checkedDelete() {
+      console.log(this.ths);
+    },
+    getDeleteList(checklist) {
+      this.checkedId = checklist;
     },
   },
 
   watch: {
-      checkedId: function(){
-          this.$emit('getDeleteList', this.checkedId);
-      }
+    /**
+     * Mỗi khi thay đổi danh sách các ID muốn xóa, tạo một custom event để truyền lên cha
+     * created by: NHNGHIA (04/08/2021)
+     */
+    checkedId: function () {
+      this.$emit("sendCheckedListToParent", this.checkedId);
+    },
+
+    /**
+     * Gửi id nhân viên cần sửa lên component cha
+     * created by: NHNGHIA (04/08/2021)
+     */
+    updateId: function () {
+      this.$emit("sendIdUpdateToParent", this.updateId);
+    },
+
+    employees: function () {
+      var self = this;
+      EmployeeApi.getAll()
+        .then((res) => {
+          self.employees = res.data;
+          self.employees.forEach((item) => {
+            item.Salary = Format.salaryFormat(item.Salary);
+            item.DateOfBirth = Format.dobFormat(item.DateOfBirth);
+          });
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    },
   },
+
   data() {
     return {
       employees: [],
       employee: {},
-      checkedId: []
+      checkedId: [],
+      employeeId: {
+        name: "EmployeeId",
+      },
+      thsEmployee: [
+        {
+          name: "Mã nhân viên",
+          textLeft: true,
+          id: "EmployeeCode",
+        },
+        {
+          name: "Họ tên",
+          textLeft: true,
+          id: "FullName",
+        },
+        {
+          name: "Giới tính",
+          textLeft: true,
+          id: "GenderName",
+        },
+        {
+          name: "Ngày sinh",
+          textCenter: true,
+          id: "DateOfBirth",
+        },
+        {
+          name: "Điện thoại",
+          textCenter: true,
+          id: "PhoneNumber",
+        },
+        {
+          name: "Email",
+          textLeft: true,
+          id: "Email",
+        },
+        {
+          name: "Chức vụ",
+          textLeft: true,
+          id: "PositionName",
+        },
+        {
+          name: "Phòng ban",
+          textLeft: true,
+          id: "DepartmentName",
+        },
+        {
+          name: "Mức lương cơ bản",
+          textRight: true,
+          id: "Salary",
+        },
+        {
+          name: "Tình trạng công việc",
+          textLeft: true,
+          id: "WorkStatus",
+        },
+      ],
+      updateId: "",
     };
   },
 };

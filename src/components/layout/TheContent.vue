@@ -152,7 +152,10 @@
         </div>
         <div id="btn-refresh" class="button-refresh" @click="refresh"></div>
       </div>
-      <EmployeeList @updateEmployeeById="updateEmployeeById" @getDeleteList="getDeleteList"/>
+      <EmployeeList 
+      @sendIdUpdateToParent="updateEmployeeById" 
+      @sendCheckedListToParent="getDeleteList"
+      />
       <div class="paging-bar">
         <div class="number-show">Hiện thị 1-10/1000 nhân viên</div>
         <div class="pagingbar-tool">
@@ -192,7 +195,7 @@
       :isShow="employeeModalShow"
       @closeModal="closeModal"
       :newEmployeeCode="newEmployeeCode"
-      :employeeId="employeeId"
+      :employeeId="updateId"
       :formMode="formMode"
     />
     <PopUp 
@@ -200,6 +203,9 @@
     @onCancelClick="onCancelClick"
     @onDeleteConfirm="onDeleteConfirm"/>
   </div>
+  <transition name="toast" >
+    <ToastMessenger :isShowToast="isShowToast"/>
+  </transition>
 </template>
 
 <script>
@@ -207,7 +213,8 @@ import axios from "axios";
 import EmployeeList from "../../view/employee/EmployeeListt.vue";
 import EmployeeModal from "../../view/employee/EmployeeModal.vue";
 import PopUp from "../base/PopUp.vue";
-import BaseApi from "../../api/base/BaseApi.js"
+import ToastMessenger from "../base/toastmessenger/ToastMessenger.vue";
+//import BaseApi from "../../api/base/BaseApi.js"
 //import $ from 'jQuery'
 export default {
   name: "Content",
@@ -220,11 +227,13 @@ export default {
     EmployeeList,
     EmployeeModal,
     PopUp,
+    ToastMessenger,
   },
 
   methods: {
     /**
-     * Thêm mới nhân viên
+     * Thêm mới nhân viên 
+     * created by: NHNGHIA (02/08/2021)
      */
     addEmployee() {
       this.formMode = 0;
@@ -233,20 +242,23 @@ export default {
 
     /**
      * đóng modal
+     * created by: NHNGHIA (02/08/2021)
      */
     closeModal(employeeModalShow) {
       this.employeeModalShow = employeeModalShow;
     },
 
     /**
-     * Xóa nhân viên bằng id
+     * Lấy danh sách id của các nhân viên muốn xóa từ component con
+     * created by: NHNGHIA (03/08/2021)
      */
     getDeleteList(deleteList){
       this.deleteList = deleteList;
+      console.log(this.deleteList);
     },
     /**
      * Xóa nhân viên theo Id
-     * created By: NHNNGHIA (2/8/2021)
+     * created By: NHNNGHIA (02/8/2021)
      */
      deleteEmployeeById(id){
       axios.delete(`http://cukcuk.manhnv.net/v1/Employees/${id}`)
@@ -258,6 +270,7 @@ export default {
     },
     /**
      * Bắt sự kiện click vào nút xóa
+     * created by: NHNGHIA (02/08/2021)
      */
     onDeleteClick(){
       if(this.deleteList.length == 0){
@@ -266,20 +279,28 @@ export default {
         this.isShowPopup = true;
       }
     },
+
+    getUpdateId(id) {
+      this.updateId = id;
+      console.log(this.updateId);
+    },
+
     /**
      * sửa thông tin nhân viên bằng id
+     * created by: NHNGHIA (02/08/2021)
      */
     updateEmployeeById(id) {
       this.formMode = 1;
-      this.employeeId = id;
+      this.updateId = id;
       this.employeeModalShow = true;
     },
 
     /**
      * Load lại bảng
+     * created by: NHNGHIA (02/08/2021)
      */
     refresh() {
-      alert("refresh");
+      this.isShowToast = !this.isShowToast;
     },
 
     /**
@@ -331,7 +352,7 @@ export default {
       if(this.deleteList.length == 0) {
         this.isHide = true;
       } else {
-        this.isHide = false;
+        this.isHide = false;  
       }
     }
   },
@@ -344,11 +365,35 @@ export default {
       deleteList: [],
       isShowPopup: false,
       isHide: true,
+      isShowToast: false,
+      updateId: '',
     };
   },
 };
 </script>
 
 <style scoped>
-@import url("../../css/layout/Content.css");
+@import url("../../assets/css/layout/Content.css");
+
+.toast-enter{
+  opacity: 0;
+  background-color: black;
+}
+.toast-enter-to{
+  opacity: 1;
+  background-color: green;
+}
+.toast-enter-active{
+  transition: all 3s ease;
+}
+
+.toast-leave-from{
+
+}
+.toast-leave-to{
+
+}
+.toast-leave-active{
+
+}
 </style>

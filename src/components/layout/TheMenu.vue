@@ -26,5 +26,5 @@
 </template>
 
 <style scoped>
-  @import url('../../css/layout/Menu.css');
+  @import url('../../assets/css/layout/Menu.css');
 </style>

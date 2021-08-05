@@ -21,6 +21,6 @@ export default {
 </script>
 
 <style>
-  @import './css/base/Main.css';
+  @import './assets/css/Component/Main.css';
   @import './assets/font/font-awsome/css/all.min.css';
 </style>
